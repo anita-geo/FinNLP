@@ -59,7 +59,7 @@ def test_tfns(model, tokenizer, batch_size = 8, prompt_fun = None ):
         # tokens.pop('token_type_ids')
         for k in tokens.keys():
             tokens[k] = tokens[k].cuda()
-        res = model.generate(**tokens, max_length=512)
+        res = model.generate(**tokens, max_new_tokens=5, pad_token_id=tokenizer.eos_token_id)
         res_sentences = [tokenizer.decode(i) for i in res]
         out_text = [o.split("Answer: ")[1] for o in res_sentences]
         out_text_list += out_text
