@@ -30,7 +30,7 @@ def change_target(x):
         return 'neutral'
 
 def test_fpb(model, tokenizer, batch_size = 8, prompt_fun = None ):
-    instructions = load_dataset("financial_phrasebank", "sentences_50agree")
+    instructions = load_dataset("JackieYue/financial_sa")
     instructions = instructions["train"]
     instructions = instructions.train_test_split(seed = 42)['test']
     instructions = instructions.to_pandas()
