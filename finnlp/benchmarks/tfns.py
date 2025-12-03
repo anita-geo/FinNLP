@@ -26,9 +26,13 @@ def format_example(example: dict) -> dict:
 
     # 3. Apply Llama 3.1 Template structure
     # <|begin_of_text|><|start_header_id|>system...<|start_header_id|>user...<|start_header_id|>assistant
+    # context = f"<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\n{system_prompt}<|eot_id|>"
+    # context += f"<|start_header_id|>user<|end_header_id|>\n\n{user_content}<|eot_id|>"
+    # context += f"<|start_header_id|>assistant<|end_header_id|>\n\n"
+
     context = f"<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\n{system_prompt}<|eot_id|>"
     context += f"<|start_header_id|>user<|end_header_id|>\n\n{user_content}<|eot_id|>"
-    context += f"<|start_header_id|>assistant<|end_header_id|>\n\n"
+    context += f"<|start_header_id|>assistant<|end_header_id|>\n\nAnswer: "
     
     target = example["output"]
     return {"context": context, "target": target}
