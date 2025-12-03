@@ -14,10 +14,21 @@ dic = {
 }
 
 def format_example(example: dict) -> dict:
-    context = f"Instruction: {example['instruction']}\n"
+    # 1. Define the System Prompt
+    system_prompt = "You are a financial sentiment analysis expert. Analyze the sentiment of the news."
+    
+    # 2. Format User Content
+    user_content = f"Instruction: {example['instruction']}\n"
     if example.get("input"):
-        context += f"Input: {example['input']}\n"
-    context += "Answer: "
+        user_content += f"Input: {example['input']}\n"
+
+    # 3. Apply Llama 3.1 Template structure
+    # <|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\n{system_prompt}<|eot_id|><|start_header_id|>user<|end_header_id|>\n\n{user_content}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n
+    
+    context = f"<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\n{system_prompt}<|eot_id|>"
+    context += f"<|start_header_id|>user<|end_header_id|>\n\n{user_content}<|eot_id|>"
+    context += f"<|start_header_id|>assistant<|end_header_id|>\n\n"
+    
     target = example["output"]
     return {"context": context, "target": target}
 
