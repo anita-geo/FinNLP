@@ -1,49 +1,6 @@
 import warnings
 warnings.filterwarnings("ignore")
 
-from sklearn.metrics import accuracy_score,f1_score
-from datasets import load_dataset
-from tqdm import tqdm
-import datasets
-import torch
-
-dic = {
-    0:"negative",
-    1:'positive',
-    2:'neutral',
-}
-
-def format_example(example: dict) -> dict:
-    # 1. Define the System Prompt
-    system_prompt = "You are a financial sentiment analysis expert. Analyze the sentiment of the news."
-    
-    # 2. Format User Content
-    user_content = f"Instruction: {example['instruction']}\n"
-    if example.get("input"):
-        user_content += f"Input: {example['input']}\n"
-
-    # 3. Apply Llama 3.1 Template structure
-    # <|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\n{system_prompt}<|eot_id|><|start_header_id|>user<|end_header_id|>\n\n{user_content}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n
-    
-    context = f"<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\n{system_prompt}<|eot_id|>"
-    context += f"<|start_header_id|>user<|end_header_id|>\n\n{user_content}<|eot_id|>"
-    context += f"<|start_header_id|>assistant<|end_header_id|>\n\n"
-    
-    target = example["output"]
-    return {"context": context, "target": target}
-
-def change_target(x):
-    if 'positive' in x or 'Positive' in x:
-        return 'positive'
-    elif 'negative' in x or 'Negative' in x:
-        return 'negative'
-    else:
-        return 'neutral'
-
-Python
-import warnings
-warnings.filterwarnings("ignore")
-
 from sklearn.metrics import accuracy_score, f1_score
 from datasets import load_dataset
 from tqdm import tqdm
